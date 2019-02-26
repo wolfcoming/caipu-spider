@@ -1,12 +1,20 @@
+import functools
+
 import scrapy
+
+from caipuSpider import pipelines
 from caipuSpider.items import CaipuspiderItem as Item
 
 
 class xianghaSpider(scrapy.Spider):
     name = 'xianghaspider'
     start_urls = [
-        "https://www.xiangha.com/caipu/"
+        "https://www.xiangha.com/caipu/",
+        # "https://www.xiangha.com/jiankang/"
     ]
+    pipeline = set([
+        pipelines.CaipuspiderPipeline,
+    ])
 
     def parse(self, response):
         contain = response.xpath("//div[contains(@class, 'rec_classify_cell')]")
@@ -33,3 +41,4 @@ class xianghaSpider(scrapy.Spider):
 
             parentItem['childItems'] = dic
             yield parentItem
+
