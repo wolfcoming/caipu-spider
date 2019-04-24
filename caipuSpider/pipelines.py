@@ -81,7 +81,7 @@ class CaipuspiderPipeline(object):
             self.connect.commit()
 
             # 获取id
-            sql = 'select id from app_menucategory where name = "' + name + '"'
+            sql = 'select id from app_menucategory where name = "' + name + '" and category_level = 1'
             self.cursor.execute(sql)
             self.connect.commit()
             result = self.cursor.fetchall()
@@ -95,10 +95,11 @@ class CaipuspiderPipeline(object):
                 parent_category_id = id
                 category_way = child['leibie']
                 islast_level = True
+                extralurl = child['url']
                 # 插入第二级数据
-                sql = 'insert into app_menucategory(name,brief,category_level,parent_category_id,category_way,islast_level)' \
-                      ' values (%s, %s, %s, %s, %s, %s)'
-                self.cursor.execute(sql, (name, brief, category_level, parent_category_id, category_way, islast_level))
+                sql = 'insert into app_menucategory(name,brief,category_level,parent_category_id,category_way,extralurl,islast_level)' \
+                      ' values (%s, %s, %s, %s, %s, %s,%s)'
+                self.cursor.execute(sql, (name, brief, category_level, parent_category_id, category_way,extralurl, islast_level))
                 self.connect.commit()
 
         return item

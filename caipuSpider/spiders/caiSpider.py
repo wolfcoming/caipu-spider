@@ -3,9 +3,13 @@ import scrapy
 from caipuSpider import pipelines
 from caipuSpider.items import CaiContentItem
 
+index = 0
+
 
 class CaiSpider(scrapy.Spider):
     name = 'caispider'
+
+    # TODO 动态的从数据库中遍历所有类型，根据类型来查询所有菜详情
     start_urls = [
         "https://www.xiangha.com/caipu/z-jiachangcai/",
     ]
@@ -27,6 +31,14 @@ class CaiSpider(scrapy.Spider):
             yield scrapy.Request(url=item['href'], meta={'item': item},
                                  callback=self.pare_detail, dont_filter=True)
 
+        nextPage = response.xpath('//a[@class="nextpage"]/@href').extract()[0]
+        if nextPage is not None:
+            # 只爬取五页数据
+            if nextPage != "https://www.xiangha.com/caipu/z-jiachangcai/hot-5/":
+                yield scrapy.Request(nextPage, callback=self.parse)
+                self.log("下一页：：：：：" + nextPage)
+
+
     def pare_detail(self, response):
         item = response.meta['item']
         # 获取点击量和收藏量
@@ -34,7 +46,7 @@ class CaiSpider(scrapy.Spider):
             .xpath("//div[contains(@class, 'rec_social')]/div[@class='info']")
         views = viewsandcollect.xpath('./text()').extract()[0]
         views = views.replace(' ', '')
-        views = views[0:len(views)-2]
+        views = views[0:len(views) - 2]
         collect = viewsandcollect.xpath('./span/span/text()').extract()[0]
         item['views'] = views
         item['collect'] = collect

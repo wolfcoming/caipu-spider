@@ -33,9 +33,11 @@ class xianghaSpider(scrapy.Spider):
             dic = []
             for child in childList:
                 childName = child.xpath('./text()')[0].extract()
+                url = child.xpath('./@href').extract()[0]
                 item = Item()
                 item['name'] = childName
                 item['level'] = 2
+                item['url'] = url
                 item['leibie'] = '1'
                 dic.append(item)
 

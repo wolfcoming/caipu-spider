@@ -10,6 +10,7 @@ import scrapy
 
 class CaipuspiderItem(scrapy.Item):
     name = scrapy.Field()
+    url = scrapy.Field()
     childItems = scrapy.Field()  # 子孩子
     level = scrapy.Field()  # 当前级别
     leibie = scrapy.Field()  # 类别方式 ：1 分类 2 食材
