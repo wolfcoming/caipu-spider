@@ -100,4 +100,8 @@ MYSQL_PASSWD = 'yangqing'  # 数据库密码，请修改
 MYSQL_PORT = 3306  # 数据库端口，在dbhelper中使用
 
 
-# LOG_LEVEL = 'ERROR'
+
+# 香哈菜谱 每种类型爬取多少页
+XH_PAGENUMBER = 2
+
+LOG_LEVEL = 'ERROR'

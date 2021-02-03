@@ -99,7 +99,8 @@ class CaipuspiderPipeline(object):
                 # 插入第二级数据
                 sql = 'insert into app_menucategory(name,brief,category_level,parent_category_id,category_way,extralurl,islast_level)' \
                       ' values (%s, %s, %s, %s, %s, %s,%s)'
-                self.cursor.execute(sql, (name, brief, category_level, parent_category_id, category_way,extralurl, islast_level))
+                self.cursor.execute(sql, (
+                name, brief, category_level, parent_category_id, category_way, extralurl, islast_level))
                 self.connect.commit()
 
         return item
@@ -150,6 +151,7 @@ class CaiDetailPipeline(object):
         # 如果已经存在 则不保存
         sql = 'select * from app_greens where name = "' + name + '"'
         row = self.cursor.execute(sql)
+        row = 0  # 不去重
         self.connect.commit()
         if row == 0:
             # 插入数据
@@ -158,7 +160,7 @@ class CaiDetailPipeline(object):
             self.cursor.execute(sql, (name, brief, tips, views, collect, makes, burden, img))
             self.connect.commit()
         else:
-            print("已经存在，需要未该菜增加一个类型（操作关系表）")
+            print(name + ": 已经存在，需要未该菜增加一个类型（操作关系表）")
         return item
 
     def close_spider(self, spider):

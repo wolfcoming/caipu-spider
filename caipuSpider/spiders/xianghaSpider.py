@@ -18,7 +18,6 @@ class xianghaSpider(scrapy.Spider):
 
     def parse(self, response):
         contain = response.xpath("//div[contains(@class, 'rec_classify_cell')]")
-
         parent = contain.xpath('./h3')
         for item in parent:
             # 获取当前节点的文字内容
